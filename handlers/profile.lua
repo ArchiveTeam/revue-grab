@@ -4,6 +4,14 @@ local module = {}
 
 local cur_stat_code = nil
 
+module.download_child_p = function(urlpos, parent, depth, start_url_parsed, iri, verdict, reason)
+	local newurl = urlpos["url"]["url"]
+	-- Get images, viz. profile image
+	if string.match(newurl, "^https://s3%.amazonaws%.com/revue/") or string.match(newurl, "%.png$") or string.match(newurl, "%.jpe?g$") then
+		queue_request({url=newurl}, retry_common.only_retry_handler(10, {200}))
+	end
+end
+
 
 module.get_urls = function(file, url, is_css, iri)
 	if cur_stat_code == 200 then
