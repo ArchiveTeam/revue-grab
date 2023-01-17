@@ -10,6 +10,10 @@ module.download_child_p = function(urlpos, parent, depth, start_url_parsed, iri,
 	if string.match(newurl, "^https://s3%.amazonaws%.com/revue/") or string.match(newurl, "%.png$") or string.match(newurl, "%.jpe?g$") then
 		queue_request({url=newurl}, retry_common.only_retry_handler(10, {200}))
 	end
+	-- Get first page stuff
+	if string.match(newurl, "^https?://www%.getrevue%.co/profile/[a-z0-9A-Z%-%_]+/issues/[^/]+$") then
+		queue_request({url=newurl}, "issue")
+	end
 end
 
 
